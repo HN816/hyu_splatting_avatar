@@ -82,18 +82,37 @@ class MeshCpu:
                 self.FE[i, (j + 1) % 3] = EMAP[i + j * self.F.shape[0]]
 
     def read_obj(self, obj_fn):
-        mesh = igl.read_obj(obj_fn)
-        self.V, self.TC, self.N, self.F, self.FTC, self.FN = mesh
-        if self.TC.shape[0] == 0:
+        import trimesh
+        mesh = trimesh.load(obj_fn, process=False)
+
+        self.V = np.array(mesh.vertices)
+        self.F = np.array(mesh.faces)
+
+        self.TC = None
+        self.FTC = None
+        if hasattr(mesh.visual, 'uv'):
+            self.TC = np.array(mesh.visual.uv)
+            self.FTC = self.F
+
+        self.N = np.array(mesh.vertex_normals) if mesh.vertex_normals is not None else None
+        self.FN = self.F if self.N is not None else None
+
+        if self.TC is not None and self.TC.shape[0] == 0:
             self.TC = None
             self.FTC = None
-        if self.N.shape[0] == 0:
+        if self.N is not None and self.N.shape[0] == 0:
             self.N = None
             self.FN = None
 
-        # VC
+        self.VC = None
+        if hasattr(mesh.visual, 'vertex_colors') and mesh.visual.vertex_colors is not None:
+            vc = np.array(mesh.visual.vertex_colors)
+            if vc.shape[1] >= 3:
+                self.VC = vc[:, :3].astype(np.uint8)
+
         if self.V is not None and self.V.shape[1] == 6:
             self.V, self.VC = self.V[:, :3], self.V[:, 3:6].astype(np.uint8)
+
 
     def read_ply(self, ply_fn):
         self.V, self.F = igl.read_triangle_mesh(ply_fn)
