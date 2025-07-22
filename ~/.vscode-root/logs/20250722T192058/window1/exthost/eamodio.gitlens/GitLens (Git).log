@@ -1,0 +1,8 @@
+2025-07-22 19:23:13.119 [info] [2025-07-22 10:23:13.103] [         39ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git symbolic-ref --short refs/remotes/origin/HEAD • FAILED
+2025-07-22 19:23:13.119 [info] 
+Error: fatal: ref refs/remotes/origin/HEAD is not a symbolic ref
+
+2025-07-22 19:24:44.452 [info] [2025-07-22 10:24:44.452] [*     91347ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git remote set-head -a origin (slow) • FAILED
+2025-07-22 19:24:44.452 [info] 
+Canceled: Operation cancelled; command=/usr/bin/git -c core.quotepath=false -c color.ui=false remote set-head -a origin
+

@@ -1,0 +1,77 @@
+{
+    "telemetry.sqmId": "",
+    "telemetry.machineId": "b65038901903f47705dd0893ffe783e02ab8ebddd15ddb31f8a75971ba548b87",
+    "telemetry.devDeviceId": "5d51789c-fe79-44c0-8f71-eee81ade54a2",
+    "backupWorkspaces": {
+        "workspaces": [],
+        "folders": [
+            {
+                "folderUri": "file:///home/team2-2025/splatting_avatar/opt/SplattingAvatar"
+            }
+        ],
+        "emptyWindows": []
+    },
+    "windowControlHeight": 35,
+    "profileAssociations": {
+        "workspaces": {
+            "file:///home/team2-2025/splatting_avatar/opt/SplattingAvatar": "__default__profile__"
+        },
+        "emptyWindows": {}
+    },
+    "theme": "vs-dark",
+    "themeBackground": "#1f1f1f",
+    "windowSplash": {
+        "zoomLevel": 0,
+        "baseTheme": "vs-dark",
+        "colorInfo": {
+            "foreground": "#cccccc",
+            "background": "#1f1f1f",
+            "editorBackground": "#1f1f1f",
+            "titleBarBackground": "#181818",
+            "titleBarBorder": "#2b2b2b",
+            "activityBarBackground": "#181818",
+            "activityBarBorder": "#2b2b2b",
+            "sideBarBackground": "#181818",
+            "sideBarBorder": "#2b2b2b",
+            "statusBarBackground": "#181818",
+            "statusBarBorder": "#2b2b2b",
+            "statusBarNoFolderBackground": "#1f1f1f"
+        },
+        "layoutInfo": {
+            "sideBarSide": "left",
+            "editorPartMinWidth": 220,
+            "titleBarHeight": 35,
+            "activityBarWidth": 48,
+            "sideBarWidth": 430,
+            "auxiliarySideBarWidth": 0,
+            "statusBarHeight": 22,
+            "windowBorder": false
+        }
+    },
+    "windowSplashWorkspaceOverride": {
+        "layoutInfo": {
+            "sideBarWidth": 430,
+            "auxiliaryBarWidth": 300,
+            "workspaces": {
+                "a718f835a2d566eafa81d1da0b27bf8b": {
+                    "sideBarVisible": true,
+                    "auxiliaryBarVisible": false
+                }
+            }
+        }
+    },
+    "windowsState": {
+        "lastActiveWindow": {
+            "folder": "file:///home/team2-2025/splatting_avatar/opt/SplattingAvatar",
+            "backupPath": "/home/team2-2025/splatting_avatar/opt/SplattingAvatar/~/.vscode-root/Backups/10bafd945e4abd4b2b26b70d424ca5f5",
+            "uiState": {
+                "mode": 1,
+                "x": 1777,
+                "y": 691,
+                "width": 1802,
+                "height": 1394
+            }
+        },
+        "openedWindows": []
+    }
+}

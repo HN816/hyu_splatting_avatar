@@ -1,0 +1,18 @@
+2025-07-22 19:23:06.475 [info] GitLens v17.3.1 activating in Visual Studio Code (1.101.2) on the desktop; language='en', logLevel='warn', defaultDateLocale='null' (b65038901903f47705dd0893ffe783e02ab8ebddd15ddb31f8a75971ba548b87|69de6941-de0c-44c6-9c7d-1e88fac8c44d1753179659333)
+To enable debug logging, set `"gitlens.outputLevel": "debug"` or run "GitLens: Enable Debug Logging" from the Command Palette
+[2025-07-22 10:23:06.445] ds.e
+EntryNotFound (FileSystemError): Error: ENOENT: no such file or directory, open '/root/.local/share/gk/repoMapping.json'
+
+2025-07-22 19:23:13.602 [info] [2025-07-22 10:23:13.102] Warning(/usr/bin/git -c core.quotepath=false -c color.ui=false symbolic-ref --short refs/remotes/origin/HEAD): fatal: ref refs/remotes/origin/HEAD is not a symbolic ref
+
+[2025-07-22 10:23:13.103] [GIT          ] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git symbolic-ref --short refs/remotes/origin/HEAD • ref refs/remotes/origin/HEAD is not a symbolic ref [39ms]
+
+2025-07-22 19:23:16.111 [info] [2025-07-22 10:23:16.034] [GIT   *2984ms] (spawn) [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D%aN%x1D%aE%x1D%at%x1D%cN%x1D%cE%x1D%ct%x1D%P%x1D%D%x1D%B%x1D --numstat --summary -M --use-mailmap --no-min-parents -n41 frame-render-test -- [*2984ms] (slow)
+
+2025-07-22 19:24:44.952 [info] [2025-07-22 10:24:44.451] Warning(/usr/bin/git -c core.quotepath=false -c color.ui=false remote set-head -a origin): remote: Repository not found.
+fatal: Authentication failed for 'https://github.com/HN816/hyu_splatting_avatar.git/'
+
+[2025-07-22 10:24:44.452] [GIT          ] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git remote set-head -a origin • cancelled [91347ms] (slow)
+
+2025-07-22 19:26:21.657 [info] [2025-07-22 10:26:21.157] [GIT   *2719ms] (spawn) [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D%aN%x1D%aE%x1D%at%x1D%cN%x1D%cE%x1D%ct%x1D%P%x1D%D%x1D%B%x1D --numstat --summary -M --use-mailmap --no-min-parents -n41 frame-render-test -- [*2719ms] (slow)
+
