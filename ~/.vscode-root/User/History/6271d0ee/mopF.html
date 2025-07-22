@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>SplattingAvatar Live Render</title>
+<style>
+  body { margin:0; background:#222; display:flex; justify-content:center; align-items:center; height:100vh; }
+  img { max-width:90vw; max-height:90vh; border: 2px solid #eee; }
+</style>
+</head>
+<body>
+  <img id="live_img" src="" alt="Live Render" />
+  <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+  <script>
+    const socket = io();
+    socket.on('connect', () => {
+      console.log('Socket connected');
+    });
+    socket.on('new_frame', data => {
+      document.getElementById('live_img').src = 'data:image/jpeg;base64,' + data.image;
+    });
+  </script>
+</body>
+</html>

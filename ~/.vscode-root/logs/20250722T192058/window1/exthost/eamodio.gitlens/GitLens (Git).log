@@ -6,3 +6,123 @@ Error: fatal: ref refs/remotes/origin/HEAD is not a symbolic ref
 2025-07-22 19:24:44.452 [info] 
 Canceled: Operation cancelled; command=/usr/bin/git -c core.quotepath=false -c color.ui=false remote set-head -a origin
 
+2025-07-22 21:19:33.920 [info] [2025-07-22 12:19:33.920] [         17ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L114,114:eval_animate.py • FAILED
+2025-07-22 21:19:33.920 [info] 
+Error: fatal: file eval_animate.py has only 113 lines
+
+2025-07-22 21:22:13.008 [info] [2025-07-22 12:22:13.008] [         12ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:22:13.008 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:22:33.154 [info] [2025-07-22 12:22:33.154] [         15ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:22:33.154 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:22:49.901 [info] [2025-07-22 12:22:49.901] [         15ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:22:49.901 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:26:31.286 [info] [2025-07-22 12:26:31.286] [         17ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:26:31.286 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:27:11.150 [info] [2025-07-22 12:27:11.150] [         14ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:27:11.150 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:28:23.841 [info] [2025-07-22 12:28:23.841] [         17ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:28:23.841 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:28:34.509 [info] [2025-07-22 12:28:34.509] [         22ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git blame --root --incremental -- app.py • FAILED
+2025-07-22 21:28:34.509 [info] 
+Error: fatal: cannot open or read 'app.py': No such file or directory
+
+2025-07-22 21:28:34.851 [info] [2025-07-22 12:28:34.851] [         15ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:28:34.851 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:28:54.830 [info] [2025-07-22 12:28:54.830] [         19ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:28:54.830 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:31:36.537 [info] [2025-07-22 12:31:36.537] [         30ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L60,60:app.py • FAILED
+2025-07-22 21:31:36.537 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:31:48.762 [info] [2025-07-22 12:31:48.762] [         19ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:31:48.762 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:32:08.202 [info] [2025-07-22 12:32:08.202] [         14ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L60,60:app.py • FAILED
+2025-07-22 21:32:08.203 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:32:16.944 [info] [2025-07-22 12:32:16.944] [         17ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:32:16.945 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:36:01.892 [info] [2025-07-22 12:36:01.892] [         13ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:36:01.892 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:36:05.939 [info] [2025-07-22 12:36:05.939] [         18ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:36:05.939 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:37:51.500 [info] [2025-07-22 12:37:51.500] [         17ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L60,60:app.py • FAILED
+2025-07-22 21:37:51.501 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:37:53.833 [info] [2025-07-22 12:37:53.833] [         16ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:37:53.833 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:42:35.060 [info] [2025-07-22 12:42:35.060] [         17ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:42:35.060 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:42:46.057 [info] [2025-07-22 12:42:46.057] [         11ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:42:46.057 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:46:58.876 [info] [2025-07-22 12:46:58.876] [         15ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:46:58.877 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:47:07.460 [info] [2025-07-22 12:47:07.460] [         19ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:47:07.460 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:47:57.266 [info] [2025-07-22 12:47:57.265] [         14ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:47:57.266 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:48:49.190 [info] [2025-07-22 12:48:49.189] [         15ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:48:49.190 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:49:44.422 [info] [2025-07-22 12:49:44.422] [         17ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:49:44.422 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 21:53:41.610 [info] [2025-07-22 12:53:41.610] [         18ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 21:53:41.611 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 22:00:09.698 [info] [2025-07-22 13:00:09.698] [         14ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 22:00:09.698 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 22:04:22.514 [info] [2025-07-22 13:04:22.514] [         17ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L174,174:gaussian_renderer/network_gui.py • FAILED
+2025-07-22 22:04:22.514 [info] 
+Error: fatal: file gaussian_renderer/network_gui.py has only 137 lines
+
+2025-07-22 22:13:51.892 [info] [2025-07-22 13:13:51.892] [         18ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L30,30:app.py • FAILED
+2025-07-22 22:13:51.892 [info] 
+Error: fatal: There is no path app.py in the commit
+
+2025-07-22 22:13:58.457 [info] [2025-07-22 13:13:58.457] [         15ms] [/home/team2-2025/splatting_avatar/opt/SplattingAvatar] git log --format=%x1E%H%x1D -n2 -L1,1:app.py • FAILED
+2025-07-22 22:13:58.457 [info] 
+Error: fatal: There is no path app.py in the commit
+
