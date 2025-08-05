@@ -72,15 +72,15 @@ if __name__ == "__main__":
     image_dir = outdir / "images"
     os.makedirs(image_dir, exist_ok=True)
 
-    # print("Write images to", image_dir)
-    # cap = cv2.VideoCapture(str(dirpath / f"{args.subject}.mp4"))
-    # frame_cnt = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    # for i in tqdm.trange(frame_cnt):
-    #     img_path = f"{image_dir}/image_{i:04d}.png"
-    #     ok, frame = cap.read()
-    #     if not ok: break
-    #     frame = cv2.undistort(frame, K, dist_coeffs)
-    #     cv2.imwrite(img_path, frame)
+    print("Write images to", image_dir)
+    cap = cv2.VideoCapture(str(dirpath / f"{args.subject}.mp4"))
+    frame_cnt = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    for i in tqdm.trange(frame_cnt):
+        img_path = f"{image_dir}/image_{i:04d}.png"
+        ok, frame = cap.read()
+        if not ok: break
+        frame = cv2.undistort(frame, K, dist_coeffs)
+        cv2.imwrite(img_path, frame)
 
     # load masks
     mask_dir = outdir / "masks"
@@ -91,8 +91,8 @@ if __name__ == "__main__":
     for i, mask in enumerate(tqdm.tqdm(masks)):
         mask_path = f"{mask_dir}/mask_{i:04d}.npy"
         mask = cv2.undistort(mask, K, dist_coeffs)
-        # np.save(mask_path, mask)
-        # cv2.imwrite(mask_path.replace('.npy', '.png'), mask * 255)
+        np.save(mask_path, mask)
+        cv2.imwrite(mask_path.replace('.npy', '.png'), mask * 255)
  
         # remove boundary artifact
         alpha = mask * 255
