@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Render</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+  <style>
+    canvas {
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Live Render</h1>
+  <canvas id="render_canvas" width="1080" height="1080"></canvas>
+<script>
+  const socket = io();
+
+  const canvas = document.getElementById('render_canvas');
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+  let currentUrl = null;
+
+  img.onload = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    // 이전 Blob URL 해제
+    if (currentUrl) {
+      URL.revokeObjectURL(currentUrl);
+    }
+  };
+
+  socket.on('new_frame', (data) => {
+    const base64Data = data.image;
+    const base64Str = base64Data.startsWith('data:image') ? base64Data.split(',')[1] : base64Data;
+
+    const byteCharacters = atob(base64Str);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], {type: 'image/png'});
+
+    // 새 Blob URL 생성 후 img.src에 할당
+    currentUrl = URL.createObjectURL(blob);
+    img.src = currentUrl;
+  });
+</script>
+
+</body>
+</html>
