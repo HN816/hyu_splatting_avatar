@@ -74,7 +74,7 @@ class GaussianBase(nn.Module):
         self.active_sh_degree = self.max_sh_degree
         
     # render
-    def render_to_camera(self, viewpoint_cam, pipe, background='random', scaling_modifier=1.0):
+    def render_to_camera(self, viewpoint_cam, pipe, background='white', scaling_modifier=1.0):
         if background == 'white':
             background = torch.tensor([1, 1, 1], dtype=torch.float32, device='cuda')
         elif background == 'black':

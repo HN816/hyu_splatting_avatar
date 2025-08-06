@@ -37,7 +37,6 @@ def try_connect():
     global conn, addr, listener
     try:
         conn, addr = listener.accept()
-        print(f"\n[try_connect] 클라이언트 연결 수락됨: {addr}")
         conn.settimeout(None)
 
         # 서버가 최초 연결 직후 클라이언트에 초기 JSON 메시지를 보냄
@@ -69,32 +68,25 @@ def send_json(message_dict):
         length_bytes = len(message_bytes).to_bytes(4, 'little')
         conn.sendall(length_bytes)
         conn.sendall(message_bytes)
-        print(f"[send_json] 메시지 전송 완료, 길이: {len(message_bytes)}")
     except Exception as e:
-        print(f"[send_json] 예외 발생: {e}")
         traceback.print_exc()
         conn = None
 
 def read():
     global conn
     messageLength = conn.recv(4)
-    print(f"[read] Length raw: {messageLength}")
     if not messageLength or len(messageLength) < 4:
         raise ConnectionError("메시지 길이 수신 실패 또는 연결 종료")
     
     messageLength = int.from_bytes(messageLength, 'little')
-    print(f"[read] Expecting message of length: {messageLength}")
-    
     message = b''
     while len(message) < messageLength:
         chunk = conn.recv(messageLength - len(message))
-        print(f"[read] Received chunk of size {len(chunk)}")
         if not chunk:
             raise ConnectionError("메시지 수신 중 연결 종료")
         message += chunk
     
     decoded = message.decode("utf-8")
-    print(f"[read] Full message: {decoded}")
     
     return json.loads(decoded)
 
@@ -130,10 +122,8 @@ def receive():
             full_proj_transform = torch.reshape(torch.tensor(message["view_projection_matrix"]), (4, 4)).cuda()
             full_proj_transform[:,1] = -full_proj_transform[:,1]
             custom_cam = MiniCam(width, height, fovy, fovx, znear, zfar, world_view_transform, full_proj_transform)
-            print(f"[receive] custom_cam: {custom_cam}, do_training: {do_training}, scaling_modifier: {scaling_modifier}")
 
         except Exception as e:
-            print("receive exception")
             traceback.print_exc()
             raise e
         return custom_cam, do_training, do_shs_python, do_rot_scale_python, keep_alive, scaling_modifier
@@ -161,7 +151,6 @@ def send_image_to_network(image, verify):
             net_image_bytes = memoryview((torch.clamp(net_image, min=0, max=1.0) * 255).byte().permute(1, 2, 0).contiguous().cpu().numpy())
             send(net_image_bytes, verify)
         except Exception as e: 
-            print(f"[send_image_to_network] 예외 발생: {e}")
             traceback.print_exc()
             conn = None
 
@@ -173,17 +162,13 @@ def render_to_network(model, pipe, verify, gt_image=None):
         try_connect()
     if conn != None:
         try:
-            print("[render_to_network] receive() 호출")
             custom_cam, do_training, do_shs_python, _, _, scaling_modifier = receive()
 
             with torch.no_grad():
                 net_image = model.render_to_camera(custom_cam, pipe, background='white',
                                                     scaling_modifier=scaling_modifier)["render"]
-                print(f"[render_to_network] Received custom_cam: {custom_cam}, do_training: {do_training}, scaling_modifier: {scaling_modifier}")
 
             if gt_image is not None:
-                print(f"[render_to_network] GT 이미지 존재, shape: {gt_image.shape}")
-                # step = int(max(max(gt_image.shape[1] / 200, gt_image.shape[2] / 200), 1))
                 step = 1
                 img = gt_image[:, ::step, ::step]
                 net_image[:, :img.shape[1], :img.shape[2]] = img
@@ -193,7 +178,6 @@ def render_to_network(model, pipe, verify, gt_image=None):
             send(net_image_bytes, verify)
 
         except Exception as e: 
-            print(f"[render_to_network] Exception: {e}")
             traceback.print_exc()
             conn = None
     
