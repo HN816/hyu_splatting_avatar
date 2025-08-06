@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Render</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+  <style>
+    canvas {
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Live Render (WebGL)</h1>
+  <canvas id="render_canvas" width="1080" height="1080"></canvas>
+
+<script>
+  const socket = io();
+  const canvas = document.getElementById('render_canvas');
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  
+  if (!gl) {
+    alert('WebGL not supported');
+    return;
+  }
+  
+  // WebGL 텍스처 생성
+  const texture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  
+  // 셰이더 프로그램
+  const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+  gl.shaderSource(vertexShader, `
+    attribute vec2 a_position;
+    attribute vec2 a_texCoord;
+    varying vec2 v_texCoord;
+    void main() {
+      gl_Position = vec4(a_position, 0, 1);
+      v_texCoord = a_texCoord;
+    }
+  `);
+  gl.compileShader(vertexShader);
+  
+  const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+  gl.shaderSource(fragmentShader, `
+    precision mediump float;
+    uniform sampler2D u_texture;
+    varying vec2 v_texCoord;
+    void main() {
+      gl_FragColor = texture2D(u_texture, v_texCoord);
+    }
+  `);
+  gl.compileShader(fragmentShader);
+  
+  const program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  gl.useProgram(program);
+  
+  // 버퍼 설정
+  const positions = new Float32Array([
+    -1, -1,
+     1, -1,
+    -1,  1,
+     1,  1
+  ]);
+  
+  const texCoords = new Float32Array([
+    0, 1,
+    1, 1,
+    0, 0,
+    1, 0
+  ]);
+  
+  const positionBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+  
+  const texCoordBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, texCoords, gl.STATIC_DRAW);
+  
+  // 속성 설정
+  const positionLocation = gl.getAttribLocation(program, 'a_position');
+  const texCoordLocation = gl.getAttribLocation(program, 'a_texCoord');
+  
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  gl.enableVertexAttribArray(positionLocation);
+  gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+  
+  gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+  gl.enableVertexAttribArray(texCoordLocation);
+  gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 0, 0);
+  
+  // 뷰포트 설정
+  gl.viewport(0, 0, canvas.width, canvas.height);
+  
+  socket.on('new_frame', (data) => {
+    try {
+      const base64Data = data.image;
+      const base64Str = base64Data.startsWith('data:image') ? 
+                       base64Data.split(',')[1] : base64Data;
+      
+      const byteCharacters = atob(base64Str);
+      const byteNumbers = new Uint8Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      
+      img.onload = () => {
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      };
+      
+      const blob = new Blob([byteNumbers], {type: 'image/png'});
+      img.src = URL.createObjectURL(blob);
+      
+    } catch (error) {
+      console.error('Frame processing error:', error);
+    }
+  });
+  
+  // 연결 상태 표시
+  socket.on('connect', () => {
+    console.log('Connected to server');
+  });
+  
+  socket.on('disconnect', () => {
+    console.log('Disconnected from server');
+  });
+</script>
+</body>
+</html>

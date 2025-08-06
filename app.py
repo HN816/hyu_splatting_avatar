@@ -1,7 +1,6 @@
 from flask import Flask, request, render_template
 from flask_socketio import SocketIO
 import base64
-import threading
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -11,6 +10,10 @@ latest_image_b64 = None
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/webgl')
+def webgl():
+    return render_template('webgl.html')
 
 @app.route('/upload_image', methods=['POST'])
 def upload_image():
