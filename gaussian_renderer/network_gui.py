@@ -148,7 +148,8 @@ def send_image_to_network(image, verify):
             left = (net_image.shape[2] - image.shape[2]) // 2
             net_image[:, top:top+image.shape[1], left:left+image.shape[2]] = image
 
-            net_image_bytes = memoryview((torch.clamp(net_image, min=0, max=1.0) * 255).byte().permute(1, 2, 0).contiguous().cpu().numpy())
+            # net_image_bytes = memoryview((torch.clamp(net_image, min=0, max=1.0) * 255).byte().permute(1, 2, 0).contiguous().cpu().numpy())
+            net_image_bytes = tensor_to_png_bytes(net_image)
             send(net_image_bytes, verify)
         except Exception as e: 
             traceback.print_exc()
