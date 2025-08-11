@@ -6,30 +6,41 @@ from argparse import ArgumentParser
 
 app = Flask(__name__)
 
-# -------------------- 입력 받기 --------------------
+class AnimateDataset(torch.utils.data.Dataset):
+    def __init__(self, pose_sequence_path):
+        smpl_params = dict(np.load(pose_sequence_path))
+        thetas = smpl_params["poses"][..., :72]
+        transl = smpl_params["trans"] - smpl_params["trans"][0:1]
+        transl += (0, 0.15, 5)
+
+        self.thetas = torch.tensor(thetas).float()
+        self.transl = torch.tensor(transl).float()
+
+    def __len__(self):
+        return len(self.transl)
+
+    def __getitem__(self, idx):
+        return {
+            "global_orient": self.thetas[idx:idx+1, :3].tolist(),
+            "body_pose": self.thetas[idx:idx+1, 3:].tolist(),
+            "transl": self.transl[idx:idx+1].tolist(),
+        }
+
+# argparse로 NPZ 경로 받기
 parser = ArgumentParser(description="NPZ Pose Frame Server")
 parser.add_argument("--npz_path", type=str, required=True, help="Path to NPZ file containing pose data")
 args = parser.parse_args()
 
-# -------------------- 데이터 로드 --------------------
-smpl_params = dict(np.load(args.npz_path))
-thetas_all = smpl_params["poses"][..., :72]
-transl_all = smpl_params["trans"] - smpl_params["trans"][0:1]
-transl_all += (0, 0.15, 5)
-betas = smpl_params["betas"]
-
-frame_idx = 0
+# AnimateDataset 인스턴스 생성
+anim_data = AnimateDataset(args.npz_path)
 
 @app.route("/pose/<int:idx>", methods=["GET"])
 def get_pose(idx):
-    if idx >= len(transl_all):
+    if idx < 0 or idx >= len(anim_data):
         return jsonify({"end": True})
-    pose_data = {
-        "betas": betas.tolist(),
-        "poses": thetas_all[idx:idx+1].tolist(),
-        "trans": transl_all[idx:idx+1].tolist()
-    }
-    return jsonify(pose_data)
+
+    pose = anim_data[idx]
+    return jsonify(pose)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=9000)

@@ -1,6 +1,7 @@
 import requests
 import torch
 import os
+import numpy as np
 from pathlib import Path
 
 from model.splatting_avatar_model import SplattingAvatarModel
@@ -15,13 +16,19 @@ def get_pose_from_server(frame_idx):
     res = requests.get(f"{SERVER_URL}/{frame_idx}").json()
     if res.get("end"):
         return None
-    betas = torch.tensor(res["betas"]).float()
-    thetas = torch.tensor(res["poses"]).float().unsqueeze(0)
-    transl = torch.tensor(res["trans"]).float().unsqueeze(0)
+
+    global_orient = torch.tensor(res["global_orient"]).float()  # shape: [1, 3]
+    body_pose = torch.tensor(res["body_pose"]).float()          # shape: [1, 69]
+    transl = torch.tensor(res["transl"]).float()                # shape: [1, 3]
+
+    # shapes must be:
+    # global_orient: [1, 3]
+    # body_pose: [1, 69]
+    # transl: [1, 3]
+
     return {
-        "betas": betas,
-        "global_orient": thetas[:, :3],
-        "body_pose": thetas[:, 3:],
+        "global_orient": global_orient,
+        "body_pose": body_pose,
         "transl": transl,
     }
 
@@ -43,9 +50,11 @@ if __name__ == '__main__':
 
     smpl_model = frameset_train.smpl_model
     cam = frameset_train.cam
-    empty_img = torch.zeros((cam.h, cam.w, 3), dtype=torch.uint8)
+    empty_img = np.zeros((cam.h, cam.w, 3), dtype=np.uint8)
     viewpoint_cam = make_scene_camera(0, cam, empty_img)
     mesh_py3d = frameset_train.mesh_py3d
+
+    betas = frameset_train.smpl_params['betas']
 
     pipe = config.pipe
     gs_model = SplattingAvatarModel(config.model, verbose=True)
@@ -60,15 +69,13 @@ if __name__ == '__main__':
     else:
         verify = None
 
-    out_dir = "anim_server_output"
-    os.makedirs(out_dir, exist_ok=True)
-
     frame_idx = 0
     while True:
         pose_params = get_pose_from_server(frame_idx)
         if pose_params is None:
             break
 
+        pose_params["betas"] = betas
         out = smpl_model(**pose_params)
         frame_mesh = mesh_py3d.update_padded(out['vertices'])
         mesh_info = {
@@ -84,7 +91,6 @@ if __name__ == '__main__':
         if verify is not None:
             network_gui.send_image_to_network(image, verify)
 
-        libcore.write_tensor_image(os.path.join(out_dir, f'{frame_idx:04d}.jpg'), image, rgb2bgr=True)
         frame_idx += 1
 
     print("[done]")
