@@ -14,3 +14,4 @@ model/simple_phongsurf/3rdparty/
 model/smplx_utils/smplx_models/
 dataset/bala/
 dataset/bala/
+test_animate.npz

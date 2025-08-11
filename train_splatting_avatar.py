@@ -88,16 +88,16 @@ if __name__ == '__main__':
         # there should be only one camera
         viewpoint_cam = scene_cameras[0].cuda()
         gt_image = viewpoint_cam.original_image
-        
-        # send one image to gui (optional)
-        if args.ip != 'none':
-            network_gui.render_to_network(gs_model, pipe, verify, gt_image=gt_image)
 
         # render
         render_pkg = gs_model.render_to_camera(viewpoint_cam, pipe)
         image = render_pkg['render']
         gt_image = render_pkg['gt_image']
         gt_alpha_mask = render_pkg['gt_alpha_mask']
+
+        # send rendered image to gui (optional)
+        if args.ip != 'none':
+            network_gui.render_to_network(gs_model, pipe, verify, gt_image=image)
 
         # ### debug ###
         # from model import libcore
