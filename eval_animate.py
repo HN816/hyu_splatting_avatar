@@ -29,6 +29,7 @@ class AnimateDataset(torch.utils.data.Dataset):
         return len(self.transl)
 
     def __getitem__(self, idx):
+        print(self.transl[idx:idx+1])
         datum = {
             # SMPL parameters
             "betas": self.betas,

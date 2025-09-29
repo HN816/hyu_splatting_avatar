@@ -2,6 +2,7 @@ import requests
 import torch
 import os
 import numpy as np
+import time
 from pathlib import Path
 
 from model.splatting_avatar_model import SplattingAvatarModel
@@ -12,25 +13,39 @@ from model import libcore
 
 SERVER_URL = "http://127.0.0.1:9000/pose"
 
-def get_pose_from_server(frame_idx):
-    res = requests.get(f"{SERVER_URL}/{frame_idx}").json()
+def get_pose_from_server(smpl_model):
+    try:
+        res = requests.get(f"{SERVER_URL}/latest").json()
+    except Exception as e:
+        print(f"[WARN] 서버 요청 실패: {e}")
+        return None
+
     if res.get("end"):
         return None
 
-    global_orient = torch.tensor(res["global_orient"]).float()  # shape: [1, 3]
-    body_pose = torch.tensor(res["body_pose"]).float()          # shape: [1, 69]
-    transl = torch.tensor(res["transl"]).float()                # shape: [1, 3]
+    global_orient = torch.tensor(res["global_orient"]).float()  # [1,3]
+    body_pose = torch.tensor(res["body_pose"]).float()          # [1,69]
 
-    # shapes must be:
-    # global_orient: [1, 3]
-    # body_pose: [1, 69]
-    # transl: [1, 3]
+    transl = res.get("transl")
+    if transl is None:
+        transl = [0, 0.15, 5]
+        print("[WARN] transl이 None -> [0, 0.15, 5]로 대체")
 
-    return {
+    transl = torch.tensor(transl).float().unsqueeze(0)  # [1,3]
+
+    pose_params = {
         "global_orient": global_orient,
         "body_pose": body_pose,
-        "transl": transl,
+        "transl":transl
     }
+
+    print(f"[DEBUG] pose_params shapes -> "
+          f"global_orient: {pose_params['global_orient'].shape} | "
+          f"body_pose: {pose_params['body_pose'].shape} | "
+          f"trans: {pose_params['transl'].shape}")
+
+    return pose_params
+
 
 if __name__ == '__main__':
     from argparse import ArgumentParser
@@ -69,14 +84,30 @@ if __name__ == '__main__':
     else:
         verify = None
 
-    frame_idx = 0
-    while True:
-        pose_params = get_pose_from_server(frame_idx)
-        if pose_params is None:
-            break
+    print("[INFO] SplattingAvatar Loop 시작")
 
+    # -----------------------------
+    # 메인 루프
+    # -----------------------------
+    while True:
+        pose_params = get_pose_from_server(smpl_model)
+        if pose_params is None:
+            # 사람 감지 안되면 잠깐 대기
+            time.sleep(0.05)
+            continue
+
+        # betas 추가
         pose_params["betas"] = betas
-        out = smpl_model(**pose_params)
+
+        # SMPL forward
+        try:
+            out = smpl_model(**pose_params)
+        except Exception as e:
+            print(f"[ERROR] SMPL forward 실패: {e}")
+            time.sleep(0.05)
+            continue
+
+        # mesh 업데이트
         frame_mesh = mesh_py3d.update_padded(out['vertices'])
         mesh_info = {
             'mesh_verts': frame_mesh.verts_packed(),
@@ -91,6 +122,5 @@ if __name__ == '__main__':
         if verify is not None:
             network_gui.send_image_to_network(image, verify)
 
-        frame_idx += 1
-
-    print("[done]")
+        # 루프 속도 제한
+        time.sleep(0.02)
